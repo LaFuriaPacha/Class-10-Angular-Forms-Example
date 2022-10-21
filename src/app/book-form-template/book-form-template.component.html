@@ -1,27 +1,37 @@
 <!-- ~~~ !TEMPLATE DRIVEN APPROACH! ~~~ -->
-<form>
+<form #templateFormRef="ngForm" (ngSubmit)="onFormSubmit(templateFormRef)">
   <div id="book-data">
     <!-- Title -->
     <div class="form-group">
       <label for="title">Title</label>
-      <input type="text" id="title" name="title" class="form-control" />
+      <input type="text" id="title" name="title" class="form-control" #titleRef="ngModel" [ngModel]="bookDetails.title" [(ngModel)]="book" required/>
+      <span class="help-block text-danger" *ngIf="!titleRef.valid && titleRef.touched"
+  >Please enter a valid title!</span
+>
     </div>
 
     <!-- Author -->
     <div class="form-group">
       <label for="author">Author</label>
-      <input type="text" id="author" name="author" class="form-control" />
+      <input type="text" id="author" name="author" class="form-control" #authorRef="ngModel" ngModel [ngModel]="bookDetails.author" required/>
+      <span
+  class="help-block text-danger"
+  *ngIf="!authorRef.valid && authorRef.touched"
+  >Please enter a valid author!</span>
     </div>
 
     <!-- Genre -->
     <div class="form-group">
       <label for="genre">Genre</label>
-      <select id="genre" name="genre" class="form-control">
+      <select id="genre" name="genre" class="form-control" #genreRef="ngModel" [ngModel]="'mystery'" [ngModel]="bookDetails.genre" required>
         <option value="mystery">Mystery</option>
         <option value="self-help">Self-Help</option>
         <option value="fantasy">Fantasy</option>
         <option value="science-fiction">Science Fiction</option>
       </select>
+      <span class="help-block text-danger" *ngIf="!genreRef.valid && genreRef.touched"
+  >Please enter a valid genre!</span
+>
     </div>
 
     <!-- isBestSeller -->
@@ -38,6 +48,14 @@
     </div>
 
     <!-- Submit Button -->
-    <button class="btn btn-primary" type="submit">Submit</button>
+    <button class="btn btn-primary" type="submit" [disabled]="!templateFormRef.valid">Submit: {{ book }} </button>
   </div>
 </form>
+
+<div class="row">
+  <div class="col-xs-12" ngIf="!templateFormRef.Valid">
+    <h3>{{ bookDetails.title }}</h3>
+    <h3>{{ bookDetails.author }}</h3>
+    <h3>{{ bookDetails.genre }}</h3>
+  </div>
+</div>
